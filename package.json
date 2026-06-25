@@ -1,0 +1,14 @@
+{
+  "name": "meesho-backend-clone",
+  "version": "1.0.0",
+  "description": "Complete backend implementation for Meesho clone",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.0"
+  }
+}

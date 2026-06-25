@@ -3,129 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meesho - Online Shopping App</title>
+    <title>Meesho - Online Shopping App | Lowest Prices & Best Quality</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
     <header class="navbar">
-        <div class="logo">
+        <div class="logo-area" onclick="filterCategory('all')">
             <h1>meesho</h1>
         </div>
         
         <div class="search-container">
             <i class="fa fa-search search-icon"></i>
-            <input type="text" placeholder="Try Shayari, Saree or Search by Product Code">
+            <input type="text" id="searchInput" placeholder="Try Saree, Men Tshirts or enter Product Code (e.g., s-101)...">
         </div>
 
         <nav class="nav-links">
             <div class="nav-item"><i class="fa-solid fa-mobile-screen-button"></i> Download App</div>
             <div class="nav-item">Become a Supplier</div>
             <div class="nav-item">Newsroom</div>
-            <div class="profile-cart">
+            <div class="profile-cart-split">
                 <div class="nav-item"><i class="fa-regular fa-user"></i> Profile</div>
-                <div class="nav-item"><i class="fa-solid fa-cart-shopping"></i> Cart</div>
+                <div class="nav-item cart-trigger" onclick="toggleCartModal()">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Cart</span>
+                    <span id="cartCountBadge" class="cart-badge">0</span>
+                </div>
             </div>
         </nav>
     </header>
 
     <div class="category-bar">
-        <span>Women Ethnic</span>
-        <span>Women Western</span>
-        <span>Men</span>
-        <span>Kids</span>
-        <span>Home & Kitchen</span>
-        <span>Beauty & Health</span>
-        <span>Jewellery & Accessories</span>
-        <span>Bags & Footwear</span>
-        <span>Electronics</span>
+        <span class="cat-tab active" onclick="filterCategory('all', this)">All Products</span>
+        <span class="cat-tab" onclick="filterCategory('women-ethnic', this)">Women Ethnic</span>
+        <span class="cat-tab" onclick="filterCategory('women-western', this)">Women Western</span>
+        <span class="cat-tab" onclick="filterCategory('men', this)">Men Clothing</span>
+        <span class="cat-tab" onclick="filterCategory('bags-footwear', this)">Bags & Footwear</span>
+        <span class="cat-tab" onclick="filterCategory('grocery', this)">Grocery Staples</span>
     </div>
 
-    <section class="hero-section">
-        <div class="hero-content">
-            <h2>Lowest Prices <br>Best Quality Shopping</h2>
-            <div class="hero-features">
-                <div class="feature"><i class="fa-solid fa-truck"></i> Free Delivery</div>
-                <div class="feature"><i class="fa-solid fa-wallet"></i> Cash on Delivery</div>
-                <div class="feature"><i class="fa-solid fa-rotate-left"></i> Easy Returns</div>
+    <section class="promo-container">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h2>Lowest Prices <br>Best Quality Shopping</h2>
+                <div class="hero-features">
+                    <div class="feature"><i class="fa-solid fa-truck"></i> Free Delivery</div>
+                    <div class="feature"><i class="fa-solid fa-wallet"></i> Cash on Delivery</div>
+                    <div class="feature"><i class="fa-solid fa-rotate-left"></i> Easy Returns</div>
+                </div>
+                <button class="download-btn"><i class="fa-solid fa-download"></i> Download the Meesho App</button>
             </div>
-            <button class="download-btn"><i class="fa-solid fa-download"></i> Download the Meesho App</button>
-        </div>
-        <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80" alt="Shopping Fashion">
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80" alt="Meesho Promotional Banner Showcase">
+            </div>
         </div>
     </section>
 
     <div class="section-title">
-        <h2>Top Products For You</h2>
+        <h2 id="feedTitleHeading">Top Products For You</h2>
     </div>
 
-    <main class="product-container">
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80" alt="Saree">
-            <div class="product-info">
-                <p class="product-name">Adrika Refined Sarees</p>
-                <div class="price-row">
-                    <span class="price">₹299</span>
-                    <span class="discount">₹50 off on 1st order</span>
+    <main class="product-container" id="productGridContainer">
+        </main>
+
+    <div class="cart-modal-overlay" id="cartModalOverlay">
+        <div class="cart-modal">
+            <div class="cart-modal-header">
+                <h3>Your Shopping Basket</h3>
+                <i class="fa-solid fa-xmark close-cart" onclick="toggleCartModal()"></i>
+            </div>
+            <div class="cart-modal-body" id="cartModalBody">
                 </div>
-                <span class="delivery">Free Delivery</span>
-                <div class="rating-container">
-                    <span class="rating">3.8 <i class="fa-solid fa-star"></i></span>
-                    <span class="reviews">4,120 Reviews</span>
+            <div class="cart-modal-footer">
+                <div class="cart-total-row">
+                    <span>Total Amount:</span>
+                    <strong id="cartTotalValueAmount">₹0</strong>
                 </div>
+                <button class="checkout-btn" onclick="executeCheckoutOrder()">Place Order (Cash on Delivery)</button>
             </div>
         </div>
+    </div>
 
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=400&q=80" alt="Footwear">
-            <div class="product-info">
-                <p class="product-name">Trendy Fashionable Heels</p>
-                <div class="price-row">
-                    <span class="price">₹349</span>
-                    <span class="discount">₹40 off on 1st order</span>
-                </div>
-                <span class="delivery">Free Delivery</span>
-                <div class="rating-container">
-                    <span class="rating">4.2 <i class="fa-solid fa-star"></i></span>
-                    <span class="reviews">850 Reviews</span>
-                </div>
-            </div>
-        </div>
+    <script>
+        // Mock API Product Payload Collection (Includes Search Index Keys)
+        const mockProductCatalogDB = [
+            { id: "prod-101", code: "s-101", name: "Adrika Refined Georgette Saree", category: "women-ethnic", price: 299, discountText: "₹50 off on 1st order", delivery: "Free Delivery", rating: 3.8, reviews: "4,120", imageUrl: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80" },
+            { id: "prod-102", code: "f-102", name: "Trendy Fashionable Block Heels", category: "bags-footwear", price: 349, discountText: "₹40 off on 1st order", delivery: "Free Delivery", rating: 4.2, reviews: "850", imageUrl: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=400&q=80" },
+            { id: "prod-103", code: "m-103", name: "Classic Pure Cotton Men's Shirt", category: "men", price: 249, discountText: "₹30 off on 1st order", delivery: "Free Delivery", rating: 4.0, reviews: "1,940", imageUrl: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=400&q=80" },
+            { id: "prod-104", code: "e-104", name: "Modern Breathable Sports Shoes", category: "bags-footwear", price: 410, discountText: "₹50 off on 1st order", delivery: "Free Delivery", rating: 4.1, reviews: "3,200", imageUrl: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=400&q=80" },
+            { id: "prod-105", code: "w-105", name: "Georgette Floral Casual Western Dress", category: "women-western", price: 399, discountText: "₹60 off on 1st order", delivery: "Free Delivery", rating: 4.4, reviews: "612", imageUrl: "https://images.unsplash.com/photo-1612336307429-8a898d10e223?auto=format&fit=crop&w=400&q=80" },
+            { id: "prod-106", code: "g-106", name: "Premium Organic Raw Chia Seeds (200g)", category: "grocery", price: 94, discountText: "₹10 off on 1st order", delivery: "Free Delivery", rating: 4.3, reviews: "295", imageUrl: "https://images.unsplash.com/photo-1511117495817-30df7c612d1e?auto=format&fit=crop&w=400&q=80" }
+        ];
 
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=400&q=80" alt="Men's Shirt">
-            <div class="product-info">
-                <p class="product-name">Classic Cotton Men's Shirt</p>
-                <div class="price-row">
-                    <span class="price">₹249</span>
-                    <span class="discount">₹30 off on 1st order</span>
-                </div>
-                <span class="delivery">Free Delivery</span>
-                <div class="rating-container">
-                    <span class="rating">4.0 <i class="fa-solid fa-star"></i></span>
-                    <span class="reviews">1,940 Reviews</span>
-                </div>
-            </div>
-        </div>
+        let stateUserShoppingCart = [];
 
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=400&q=80" alt="Running Shoes">
-            <div class="product-info">
-                <p class="product-name">Modern Men's Sports Shoes</p>
-                <div class="price-row">
-                    <span class="price">₹410</span>
-                    <span class="discount">₹50 off on 1st order</span>
+        // Dynamic Card Feed Rendering Sub-Routine
+        function renderProductFeed(productsArray) {
+            const feedContainer = document.getElementById('productGridContainer');
+            if(productsArray.length === 0) {
+                feedContainer.innerHTML = `
+                    <div class="empty-state-card">
+                        <i class="fa-solid fa-magnifying-glass-minus"></i>
+                        <p>No products found tracking that item criteria or code identifier string.</p>
+                    </div>`;
+                return;
+            }
+            
+            feedContainer.innerHTML = productsArray.map(item => `
+                <div class="product-card">
+                    <img src="${item.imageUrl}" alt="${item.name}" loading="lazy">
+                    <div class="product-info">
+                        <p class="product-name">${item.name}</p>
+                        <div class="price-row">
+                            <span class="price">₹${item.price}</span>
+                            <span class="discount">${item.discountText}</span>
+                        </div>
+                        <span class="delivery-pill">${item.delivery}</span>
+                        <div class="rating-container">
+                            <span class="rating-badge">${item.rating} <i class="fa-solid fa-star"></i></span>
+                            <span class="reviews-count">${item.reviews} Reviews</span>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="appendItemToCart('${item.id}')">
+                            <i class="fa-solid fa-plus"></i> Add to Cart
+                        </button>
+                    </div>
                 </div>
-                <span class="delivery">Free Delivery</span>
-                <div class="rating-container">
-                    <span class="rating">4.1 <i class="fa-solid fa-star"></i></span>
-                    <span class="reviews">3,200 Reviews</span>
-                </div>
-            </div>
-        </div>
-    </main>
+            `).join('');
+        }
 
+        // Functional Contextual Filtering Module
+        function filterCategory(categoryTarget, elementRef = null) {
+            if (elementRef) {
+                document.querySelectorAll('.cat-tab').forEach(el => el.classList.remove('active'));
+                elementRef.classList.add('active');
+            }
+            
+            if (categoryTarget === 'all') {
+                document.getElementById('feedTitleHeading').innerText = "Top Products For You";
+                renderProductFeed(mockProductCatalogDB);
+            } else {
+                const results = mockProductCatalogDB.filter(p => p.category === categoryTarget);
+                document.getElementById('feedTitleHeading').innerText = `Trending ${elementRef ? elementRef.innerText : ''}`;
+                renderProductFeed(results);
+            }
+        }
+
+        // Real-time Text/Alphanumeric Code Keyword Match Processing System
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const literalString = e.target.value.trim().toLowerCase();
+            const evaluatedMatches = mockProductCatalogDB.filter(prod => 
+                prod.name.toLowerCase().includes(literalString) || 
+                prod.code.toLowerCase() === literalString
+            );
+            renderProductFeed(evaluatedMatches);
+        });
+
+        // Interactive Operational Actions for Cart Management
+        function toggleCartModal() {
+            const overlay = document.getElementById('cartModalOverlay');
+            overlay.classList.toggle('active');
+            syncCartDOMState();
+        }
+
+        function appendItemToCart(productId) {
+            const productReference = mockProductCatalogDB.find(p => p.id === productId);
+            const matchedCartItem = stateUserShoppingCart.find(item => item.id === productId);
+
+            if (matchedCartItem) {
+                matchedCartItem.quantity += 1;
+            } else {
+                stateUserShoppingCart.push({ ...productReference, quantity: 1 });
+            }
+            updateCartNavigationMetrics();
+        }
+
+        function mutateItemQuantity(productId, variableDelta) {
+            const itemMatch = stateUserShoppingCart.find(item => item.id === productId);
+            if (!itemMatch) return;
+
+            itemMatch.quantity += variableDelta;
+            if (itemMatch.quantity <= 0) {
+                stateUserShoppingCart = stateUserShoppingCart.filter(item => item.id !== productId);
+            }
+            updateCartNavigationMetrics();
+            syncCartDOMState();
+        }
+
+        function updateCartNavigationMetrics() {
+            const accumulationCount = stateUserShoppingCart.reduce((sum, item) => sum + item.quantity, 0);
+            const displayBadge = document.getElementById('cartCountBadge');
+            displayBadge.innerText = accumulationCount;
+            displayBadge.style.transform = "scale(1.2)";
+            setTimeout(() => displayBadge.style.transform = "scale(1)", 200);
+        }
+
+        function syncCartDOMState() {
+            const bodyWrapper = document.getElementById('cartModalBody');
+            const calculationRow = document.getElementById('cartTotalValueAmount');
+            
+            if (stateUserShoppingCart.length === 0) {
+                bodyWrapper.innerHTML = `
+                    <div class="empty-cart-view">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                        <p>Your shopping basket is currently completely empty.</p>
+                    </div>`;
+                calculationRow.innerText = "₹0";
+                return;
+            }
+
+            let aggregateTotalSum = 0;
+            bodyWrapper.innerHTML = stateUserShoppingCart.map(item => {
+                const transactionalValue = item.price * item.quantity;
+                aggregateTotalSum += transactionalValue;
+                return `
+                    <div class="cart-item-node">
+                        <img src="${item.imageUrl}" alt="${item.name}">
+                        <div class="cart-node-details">
+                            <h4>${item.name}</h4>
+                            <p class="unit-cost-val">Price: ₹${item.price}</p>
+                            <div class="quantity-controller-bar">
+                                <button onclick="mutateItemQuantity('${item.id}', -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="mutateItemQuantity('${item.id}', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            calculationRow.innerText = `₹${aggregateTotalSum}`;
+        }
+
+        function executeCheckoutOrder() {
+            if(stateUserShoppingCart.length === 0) {
+                alert("Cannot place order with an empty shopping cart configuration matrix.");
+                return;
+            }
+            alert("Order placed successfully via Meesho Cash-on-Delivery (COD) system pipeline!");
+            stateUserShoppingCart = [];
+            updateCartNavigationMetrics();
+            toggleCartModal();
+        }
+
+        // Initialize Native Hydration
+        window.onload = () => renderProductFeed(mockProductCatalogDB);
+    </script>
 </body>
 </html>
